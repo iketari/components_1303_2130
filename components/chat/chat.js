@@ -1,6 +1,9 @@
 (function () {
 	'use strict';
 
+	const h = maquette.h;
+	const projector = maquette.createProjector();
+
 	/**
 	 * @typedef {Object} ChatMessage
 	 *
@@ -13,7 +16,30 @@
 			this.el = el;
 			this.data = data;
 
+			projector.append(this.el, this.renderMaquette.bind(this));
 			this._getUserName();
+		}
+
+		renderMaquette () {
+			let msgs = this.data.messages.map(message => {
+							return h('div.message-box', {classes: {'left-img': true}}, [
+								h('div.message', [
+									h('span', [message.name]),
+									h('p', [message.text])
+								])
+							]);
+						});
+
+			return h('div.chat', [
+				h('div.chat__container', [
+					h('div.header', [
+						h('h2', ['Чат'])
+					]),
+					h('div.chat__box', 
+						msgs
+					)
+				])
+			]);
 		}
 
 		render () {

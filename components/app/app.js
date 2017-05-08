@@ -19,7 +19,7 @@
 		}
 
 		render () {
-			this.chat.render();
+			this.chat.renderMaquette();
 			this.form.render();
 		}
 
@@ -38,7 +38,7 @@
 				this.chat.addMessage({
 					text: data.message.value
 				});
-				this.chat.render();
+				this.chat.renderMaquette();
 				this.form.reset();
 			});
 		}
