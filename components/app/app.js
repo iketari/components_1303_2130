@@ -4,6 +4,12 @@
 	//import
 	const Chat = window.Chat;
 	const Form = window.Form;
+	const maquette = window.maquette;
+
+	const projector = maquette.createProjector();
+	const h = maquette.h;
+
+	window.projector = projector;
 
 	class App {
 		constructor(options) {
@@ -19,17 +25,20 @@
 		}
 
 		render () {
-			this.chat.renderMaquette();
-			this.form.render();
+			projector.scheduleRender();
 		}
 
 		_createComponents () {
 			this.chat = new Chat({
-				el: document.createElement('div')
+				el: document.createElement('div'),
+				h,
+				projector
 			});
 
 			this.form = new Form({
-				el: document.createElement('div')
+				el: document.createElement('div'),
+				h,
+				projector
 			});
 		}
 
@@ -38,8 +47,8 @@
 				this.chat.addMessage({
 					text: data.message.value
 				});
-				this.chat.renderMaquette();
-				this.form.reset();
+
+				this.render();
 			});
 		}
 	

@@ -1,9 +1,6 @@
 (function () {
 	'use strict';
 
-	const h = maquette.h;
-	const projector = maquette.createProjector();
-
 	/**
 	 * @typedef {Object} ChatMessage
 	 *
@@ -12,36 +9,47 @@
 	 */
 
 	class Chat {
-		constructor({el, data = {messages: []}}) {
+		constructor({el, h, projector, data = {messages: []}}) {
 			this.el = el;
 			this.data = data;
+
+			// vdom stuff
+			this.h = h;
+			this.projector = projector;
 
 			projector.append(this.el, this.renderMaquette.bind(this));
 			this._getUserName();
 		}
 
+		onClick () {
+			this.id += 1;
+		}
+
 		renderMaquette () {
-			let msgs = this.data.messages.map(message => {
-							return h('div.message-box', {classes: {'left-img': true}}, [
+			let h = this.h;
+
+			return h('div.chat', {onclick: this.onClick}, [
+				h('div.chat__container', [
+					h('div.header', [
+						h('h2', ['Чат ' + this.data.user])
+					]),
+					h('div.chat__box', 
+						this.data.messages.map((message, index) => {
+							return h('div.message-box', {classes: {'left-img': true}, key: index}, [
 								h('div.message', [
 									h('span', [message.name]),
 									h('p', [message.text])
 								])
 							]);
-						});
-
-			return h('div.chat', [
-				h('div.chat__container', [
-					h('div.header', [
-						h('h2', ['Чат'])
-					]),
-					h('div.chat__box', 
-						msgs
+						})
 					)
 				])
 			]);
 		}
 
+		/**
+		 * @deprecated use vdom
+		 */
 		render () {
 			this.el.innerHTML = `
 			<div class="chat">

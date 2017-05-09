@@ -2,12 +2,32 @@
 	'use strict';
 
 	class Form {
-		constructor(options) {
-			this.el = options.el;
+		constructor({el, h, projector, data = {}}) {
+			this.el = el;
+			this.data = data;
+
+			// vdom stuff
+			this.h = h;
+			this.projector = projector;
 
 			this._initEvents();
+
+			projector.append(this.el, this.renderMaquette.bind(this));
 		}
 
+		renderMaquette () {
+			const h = this.h;
+
+			return h('form', {onsubmit: this._onSubmit}, [
+				h('textarea', {name: 'message', type: 'text'}),
+				h('input', {type: 'submit', value: 'Отправить'})
+			]);
+		}
+
+
+		/**
+		 * @deprecated use vdom
+		 */
 		render () {
 			this.el.innerHTML = `
 				<form>
@@ -32,7 +52,7 @@
 		}
 	
 		_initEvents () {
-			this.el.addEventListener('submit', this._onSubmit.bind(this));
+			this._onSubmit = this._onSubmit.bind(this);
 		}
 
 		_onSubmit (event) {
