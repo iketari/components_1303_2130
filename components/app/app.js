@@ -6,7 +6,7 @@
 	const Form = window.Form;
 	const maquette = window.maquette;
 
-	const projector = maquette.createProjector();
+	const projector = maquette.createProjector({transitions: window.cssTransitions});
 	const h = maquette.h;
 
 	window.projector = projector;

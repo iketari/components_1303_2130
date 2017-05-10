@@ -25,6 +25,10 @@
 			this.id += 1;
 		}
 
+		afterUpdate (...rest) {
+			console.log('update', rest);
+		}
+
 		renderMaquette () {
 			let h = this.h;
 
@@ -33,9 +37,18 @@
 					h('div.header', [
 						h('h2', ['Чат ' + this.data.user])
 					]),
-					h('div.chat__box', 
+					h('div.chat__box',
+						{afterUpdate: this.afterUpdate},
 						this.data.messages.map((message, index) => {
-							return h('div.message-box', {classes: {'left-img': true}, key: index}, [
+							return h('div.message-box', {
+									classes: {'left-img': true}, 
+									key: index,
+									enterAnimation: 'slideDown'
+								}, [
+								h('div.picture', [
+									h('img', {src: message.avatar, title: message.name}),
+									h('span.time', [message.date.toTimeString().split(' ')[0]])
+								]),
 								h('div.message', [
 									h('span', [message.name]),
 									h('p', [message.text])
@@ -83,6 +96,10 @@
 			this.data.user = 'Tim';
 		}
 
+		/**
+		 * @deprecated
+		 * @see this.renderMaquette
+		 */
 		_generateMessages () {
 			let data = this.data.messages || [];
 

@@ -36,6 +36,7 @@
 .chat__box .message-box{
   padding:18px 0 10px;
   clear:both;
+  overflow: hidden;
 }
 .message-box .picture{
   float:left;
@@ -99,4 +100,13 @@
   border-left:6px solid #fff;
   border-top: 6px solid transparent;
   border-bottom:6px solid transparent;
+}
+
+.slideDown {
+  transition: 0.5s ease-out height;
+  height: 0;
+}
+
+.slideDown.slideDown-active {
+  height: 130px;
 }
