@@ -21,8 +21,6 @@ class App {
 
 		this.el.appendChild(this.chat.el);
 		this.el.appendChild(this.form.el);
-
-		this.render();
 	}
 
 	render () {
@@ -86,5 +84,4 @@ class App {
 
 }
 
-//export
-window.App = App;
+export {App}

@@ -1,6 +1,6 @@
-
-
-//import
+/**
+ * @module components/chat
+ */
 
 import tmpl from './chat.tmpl.pug';
 

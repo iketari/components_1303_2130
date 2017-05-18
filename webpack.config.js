@@ -1,5 +1,7 @@
+const path = require('path');
+
 module.exports = {
-  entry: './components/app/app.js',
+  entry: path.join(__dirname, 'index.js'),
   output: {
     filename: 'bundle.js'
   },
@@ -14,5 +16,11 @@ module.exports = {
         }],
       },
     ]
-  }
-}
+  },
+  devServer: {
+    contentBase: __dirname,
+    compress: true,
+    port: 9000,
+    historyApiFallback: true
+  },
+};

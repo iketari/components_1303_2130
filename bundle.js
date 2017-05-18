@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 5);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74,15 +74,313 @@
 
 
 Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Router = function () {
+    function Router(_ref) {
+        var el = _ref.el;
+
+        _classCallCheck(this, Router);
+
+        this.el = el;
+        this.views = {};
+    }
+
+    /**
+     * Пеперйти на заданный путь
+     * @param {strin} path
+     * @returns {boolean} если путь не найден - false
+     */
+
+
+    _createClass(Router, [{
+        key: 'go',
+        value: function go(path) {
+            var pageView = this.views[path];
+
+            if (!pageView) {
+                return false;
+            }
+
+            pageView.show();
+
+            if (this._currentView) {
+                this._currentView.hide();
+            }
+
+            this._currentView = pageView;
+
+            window.history.pushState({}, '', path);
+
+            return true;
+        }
+
+        /**
+         * @param {string} path
+         * @param {PageView} pageView
+         */
+
+    }, {
+        key: 'register',
+        value: function register(path, pageView) {
+            this.views[path] = pageView;
+        }
+    }, {
+        key: 'start',
+        value: function start() {
+            var _this = this;
+
+            this.el.addEventListener('click', function (event) {
+                if (!(event.target instanceof HTMLAnchorElement)) {
+                    return;
+                }
+
+                if (_this.go(event.target.getAttribute('href'))) {
+                    event.preventDefault();
+                }
+            });
+
+            window.addEventListener('popstate', function (event) {
+                _this.go(location.pathname);
+            });
+        }
+    }]);
+
+    return Router;
+}();
+
+exports.default = Router;
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _app = __webpack_require__(3);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ChatPage = function () {
+    function ChatPage(_ref) {
+        var el = _ref.el;
+
+        _classCallCheck(this, ChatPage);
+
+        this.el = el;
+
+        this.el.innerHTML = '\n            <h1>\u042F \u0447\u0430\u0442\u0438\u043A!</h1>\n            <a href="/main">\u0412 \u043C\u0435\u043D\u044E!</a>\n        ';
+
+        this.hide();
+
+        this.component = new _app.App({
+            el: this.el
+        });
+    }
+
+    _createClass(ChatPage, [{
+        key: 'show',
+        value: function show() {
+            this.el.hidden = false;
+            this.component.render();
+        }
+    }, {
+        key: 'hide',
+        value: function hide() {
+            this.el.hidden = true;
+        }
+    }]);
+
+    return ChatPage;
+}();
+
+exports.default = ChatPage;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var MainPage = function () {
+    function MainPage(_ref) {
+        var el = _ref.el;
+
+        _classCallCheck(this, MainPage);
+
+        this.el = el;
+
+        this.el.innerHTML = "\n            <h1>\u042F \u0433\u043B\u0430\u0432\u043D\u043E\u0435 \u043C\u0435\u043D\u044E!</h1>\n            <ul>\n                <li>\n                    <a href=\"/chat\">\u0427\u0430\u0442!</a>\n                </li>\n            </ul>\n        ";
+
+        this.hide();
+    }
+
+    _createClass(MainPage, [{
+        key: "show",
+        value: function show() {
+            this.el.hidden = false;
+        }
+    }, {
+        key: "hide",
+        value: function hide() {
+            this.el.hidden = true;
+        }
+    }]);
+
+    return MainPage;
+}();
+
+exports.default = MainPage;
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+	value: true
+});
+exports.App = undefined;
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import
+
+var _chat = __webpack_require__(4);
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+// const Chat = window.Chat;
+// const Form = window.Form;
+// const AvatarService = window.AvatarService;
+// const ChatService = window.ChatService;
+
+var chatService = new ChatService({
+	baseUrl: 'https://components-e2e6e.firebaseio.com/chat/messages/iketari.json'
+});
+
+var App = function () {
+	function App(options) {
+		_classCallCheck(this, App);
+
+		this.el = options.el;
+
+		this._createComponents();
+		this._initMediate();
+
+		this.el.appendChild(this.chat.el);
+		this.el.appendChild(this.form.el);
+	}
+
+	_createClass(App, [{
+		key: 'render',
+		value: function render() {
+			this.chat.render();
+			this.form.render();
+		}
+	}, {
+		key: '_createComponents',
+		value: function _createComponents() {
+			this.chat = new _chat.Chat({
+				el: document.createElement('div'),
+				avatarService: new AvatarService(),
+				chatService: chatService,
+				data: {
+					messages: [],
+					user: null
+				}
+			});
+
+			this.form = new Form({
+				el: document.createElement('div')
+			});
+		}
+	}, {
+		key: '_initMediate',
+		value: function _initMediate() {
+			var _this = this;
+
+			document.addEventListener('visibilitychange', function () {
+				if (document.visibilityState === 'hidden') {
+					_this.chat.stopPolling();
+				} else {
+					_this.chat.stopPolling();
+					_this.chat.startPolling();
+				}
+			});
+
+			this.form.on('message', function (event) {
+				var data = event.detail;
+
+				if (event.detail.username.value) {
+					_this.chat.setUserName(event.detail.username.value);
+				}
+
+				data = {
+					text: data.message.value,
+					name: _this.chat.getUsername()
+				};
+
+				chatService.sendMessage(data, function () {
+					console.log('NEW MSG');
+				});
+
+				_this.chat.addOne(data);
+
+				_this.chat.render();
+				_this.form.reset();
+			});
+		}
+	}, {
+		key: 'addMessage',
+		value: function addMessage(data) {
+			this.chat.addOne(data);
+		}
+	}]);
+
+	return App;
+}();
+
+exports.App = App;
+
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
 	value: true
 });
 exports.Chat = undefined;
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); /**
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      * @module components/chat
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      */
 
-//import
-
-var _chatTmpl = __webpack_require__(2);
+var _chatTmpl = __webpack_require__(6);
 
 var _chatTmpl2 = _interopRequireDefault(_chatTmpl);
 
@@ -289,121 +587,58 @@ var Chat = function () {
 exports.Chat = Chat;
 
 /***/ }),
-/* 1 */
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }(); // import
+var _router = __webpack_require__(0);
 
-var _chat = __webpack_require__(0);
+var _router2 = _interopRequireDefault(_router);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var _chat = __webpack_require__(1);
 
-// const Chat = window.Chat;
-// const Form = window.Form;
-// const AvatarService = window.AvatarService;
-// const ChatService = window.ChatService;
+var _chat2 = _interopRequireDefault(_chat);
 
-var chatService = new ChatService({
-	baseUrl: 'https://components-e2e6e.firebaseio.com/chat/messages/iketari.json'
+var _main = __webpack_require__(2);
+
+var _main2 = _interopRequireDefault(_main);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var appEl = document.querySelector('.app');
+
+var router = new _router2.default({
+    el: appEl
 });
 
-var App = function () {
-	function App(options) {
-		_classCallCheck(this, App);
+var chatPageView = new _chat2.default({
+    el: document.createElement('div')
+});
+var mainPageView = new _main2.default({
+    el: document.createElement('div')
+});
 
-		this.el = options.el;
+appEl.appendChild(chatPageView.el);
+appEl.appendChild(mainPageView.el);
 
-		this._createComponents();
-		this._initMediate();
+router.register('/chat', chatPageView);
+router.register('/main', mainPageView);
 
-		this.el.appendChild(this.chat.el);
-		this.el.appendChild(this.form.el);
+router.start();
 
-		this.render();
-	}
-
-	_createClass(App, [{
-		key: 'render',
-		value: function render() {
-			this.chat.render();
-			this.form.render();
-		}
-	}, {
-		key: '_createComponents',
-		value: function _createComponents() {
-			this.chat = new _chat.Chat({
-				el: document.createElement('div'),
-				avatarService: new AvatarService(),
-				chatService: chatService,
-				data: {
-					messages: [],
-					user: null
-				}
-			});
-
-			this.form = new Form({
-				el: document.createElement('div')
-			});
-		}
-	}, {
-		key: '_initMediate',
-		value: function _initMediate() {
-			var _this = this;
-
-			document.addEventListener('visibilitychange', function () {
-				if (document.visibilityState === 'hidden') {
-					_this.chat.stopPolling();
-				} else {
-					_this.chat.stopPolling();
-					_this.chat.startPolling();
-				}
-			});
-
-			this.form.on('message', function (event) {
-				var data = event.detail;
-
-				if (event.detail.username.value) {
-					_this.chat.setUserName(event.detail.username.value);
-				}
-
-				data = {
-					text: data.message.value,
-					name: _this.chat.getUsername()
-				};
-
-				chatService.sendMessage(data, function () {
-					console.log('NEW MSG');
-				});
-
-				_this.chat.addOne(data);
-
-				_this.chat.render();
-				_this.form.reset();
-			});
-		}
-	}, {
-		key: 'addMessage',
-		value: function addMessage(data) {
-			this.chat.addOne(data);
-		}
-	}]);
-
-	return App;
-}();
-
-//export
-
-
-window.App = App;
+if (location.pathname === '/') {
+    router.go('/main');
+} else {
+    router.go(location.pathname);
+}
 
 /***/ }),
-/* 2 */
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var pug = __webpack_require__(3);
+var pug = __webpack_require__(7);
 
 function template(locals) {var pug_html = "", pug_mixins = {}, pug_interp;;var locals_for_with = (locals || {});(function (messages, user) {pug_html = pug_html + "\u003Cdiv class=\"chat\"\u003E\u003Cdiv class=\"chat__container\"\u003E\u003Cdiv class=\"header\"\u003E\u003Ch2\u003E" + (pug.escape(null == (pug_interp = 'Добро пожаловать ' + (user || '')) ? "" : pug_interp)) + "\u003C\u002Fh2\u003E\u003C\u002Fdiv\u003E\u003Cdiv class=\"chat__box\"\u003E";
 if (!messages.length) {
@@ -431,7 +666,7 @@ pug_html = pug_html + "\u003C\u002Fdiv\u003E\u003C\u002Fdiv\u003E\u003C\u002Fdiv
 module.exports = template;
 
 /***/ }),
-/* 3 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -665,7 +900,7 @@ function pug_rethrow(err, filename, lineno, str){
     throw err;
   }
   try {
-    str = str || __webpack_require__(4).readFileSync(filename, 'utf8')
+    str = str || __webpack_require__(8).readFileSync(filename, 'utf8')
   } catch (ex) {
     pug_rethrow(err, null, lineno)
   }
@@ -692,7 +927,7 @@ function pug_rethrow(err, filename, lineno, str){
 
 
 /***/ }),
-/* 4 */
+/* 8 */
 /***/ (function(module, exports) {
 
 /* (ignored) */
